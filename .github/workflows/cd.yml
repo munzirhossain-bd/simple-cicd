@@ -14,14 +14,15 @@ jobs:
 
     steps:
         - name: Stop the old container
-          run: docker stop simple-cicd|| true
+          run: docker stop simple-cicd-container|| true
   
         - name: Delete the old container
-          run: docker rm simple-cicd || true
+          run: docker rm simple-cicd-container || true
   
         - name: Delete the old image
           run: docker rmi ${{secrets.DOCKERHUB_USERNAME}}/simple-cicd:latest || true
   
         - name: Pull the image from dockerhub
           run: docker pull ${{secrets.DOCKERHUB_USERNAME}}/simple-cicd:latest
-         
+        - name: Run Docker Container
+          run: sudo docker run -d -p 8080:8080 --name simple-cicd-container ${{secrets.DOCKERHUB_USERNAME}}/simple-cicd:latest
